@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "error_code.h"
+
+#define WINDOW_WIDTH 700
+#define WINDOW_HEIGHT 590
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,7 +20,14 @@ public:
     ~MainWindow();
 
 private slots:
+    error_code_t draw(void);
     void on_download_figure_button_clicked();
+
+    void on_TurnButton_clicked();
+
+    void on_pushButton_zoom_clicked();
+
+    void on_pushButton_move_clicked();
 
 private:
     Ui::MainWindow *ui;
