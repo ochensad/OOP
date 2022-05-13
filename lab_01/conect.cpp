@@ -30,6 +30,15 @@ static error_code_t read_conections_size(int &size, FILE *f)
     return OK;
 }
 
+static error_code_t read_conection_coordanates(conect_t &conect, FILE *f)
+{
+    if (f == NULL)
+        return ERROR_OPENING_FILE;
+    if (fscanf(f, "%d %d", &conect.first, &conect.second) != 2)
+        return ERROR_READING_FILE;
+    return OK;
+}
+
 static error_code_t read_each_conection(conections_t &conection, FILE *f)
 {
     if (f == NULL)
@@ -39,10 +48,10 @@ static error_code_t read_each_conection(conections_t &conection, FILE *f)
     else if (conection.conections == NULL)
         return ERROR_MEMORY;
 
-    for (int i = 0; i < conection.size; i++)
-        if (fscanf(f, "%d %d", &(conection.conections[i].first), &(conection.conections[i].second)) != 2)
-            return ERROR_READING_FILE;
-    return OK;
+    error_code_t er = OK;
+    for (int i = 0; i < conection.size && (er = read_conection_coordanates(conection.conections[i], f)) == OK; i++)
+        ;
+    return er;
 }
 
 error_code_t read_conections_from_file(conections_t &conections, FILE *f)
@@ -50,13 +59,32 @@ error_code_t read_conections_from_file(conections_t &conections, FILE *f)
     if (f == NULL)
         return ERROR_OPENING_FILE;
     error_code_t er = read_conections_size(conections.size, f);
-    if (er)
-        return er;
-    er = allocate_conections_memory(conections);
-    if (er)
-        return er;
-    er = read_each_conection(conections, f);
-    if (er)
-        free_conections(conections);
+    if (er == OK)
+    {
+        er = allocate_conections_memory(conections);
+        if (er == OK)
+        {
+            er = read_each_conection(conections, f);
+            if (er != OK)
+                free_conections(conections);
+        }
+    }
     return er;
 }
+
+static error_code_t check_connection(const conect_t &conect, int size)
+{
+    if (conect.first >= size || conect.second >= size)
+        return ERROR_DATA;
+    return OK;
+}
+
+error_code_t check_connections(const conections_t &conections, int size)
+{
+    error_code_t er = OK;
+
+    for(int i = 0; i < conections.size && (er = check_connection(conections.conections[i], size)) == OK; i++)
+        ;
+    return er;
+}
+

@@ -16,6 +16,7 @@ SOURCES += \
     figure.cpp \
     main.cpp \
     mainwindow.cpp \
+    point.cpp \
     points.cpp
 
 HEADERS += \
@@ -25,6 +26,7 @@ HEADERS += \
     error_code.h \
     figure.h \
     mainwindow.h \
+    point.h \
     points.h
 
 FORMS += \

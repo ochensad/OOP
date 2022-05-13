@@ -35,6 +35,24 @@ static error_code_t read_figure_from_file(figure_t &figure, FILE *f)
     return er;
 }
 
+void copy_figure(figure_t &figure_dst, figure_t &figure_src)
+{
+    free_figure(figure_dst);
+    figure_dst = figure_src;
+}
+
+static error_code_t check_data(const figure_t &figure)
+{
+    if (figure.points.points == NULL || figure.conections.conections == NULL)
+        return ERROR_MEMORY;
+    return check_connections(figure.conections, figure.points.size);
+}
+
+static void calculate_center(figure_t &figure)
+{
+    figure.center = calculate_center_point(figure.points);
+}
+
 error_code_t download_figure(figure_t &figure, const char* filename)
 {
     if (filename == NULL)
@@ -45,28 +63,31 @@ error_code_t download_figure(figure_t &figure, const char* filename)
     figure_t tmp;
 
     error_code_t er = read_figure_from_file(tmp, f);
-
-    if (fclose(f))
-        return ERROR_CLOSING_FILE;
     if (er == OK)
     {
-        free_figure(figure);
-        figure = tmp;
+        er = check_data(tmp);
+        if (er != OK)
+            free_figure(tmp);
+        else
+        {
+            calculate_center(tmp);
+            copy_figure(figure, tmp);
+        }
     }
     return er;
 }
 
 error_code_t turn_figure(figure_t &figure, const turn_t &turn)
 {
-    return turn_points(figure.points, turn);
+    return turn_points(figure.points, figure.center, turn);
 }
 
 error_code_t zoom_figure(figure_t &figure, const zoom_t &zoom)
 {
-    return zoom_points(figure.points, zoom);
+    return zoom_points(figure.points, figure.center, zoom);
 }
 
 error_code_t move_figure(figure_t &figure, const move_t &move)
 {
-    return move_points(figure.points, move);
+    return move_points(figure.points, figure.center, move);
 }

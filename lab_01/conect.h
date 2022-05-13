@@ -22,5 +22,5 @@ using conections_t = struct conections;
 
 void free_conections(conections_t &conectins);
 error_code_t read_conections_from_file(conections_t &conections, FILE *f);
-
+error_code_t check_connections(const conections_t &conections, int size);
 #endif // CONECT_H

@@ -26,6 +26,9 @@ error_code_t switch_action(request_t &request)
         case QUIT:
             free_figure(figure);
             break;
+        default:
+            er = ERROR_UNKNOWN_COMAND;
+            break;
     }
     return er;
 }

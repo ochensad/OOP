@@ -12,7 +12,8 @@ enum error_code
     ERROR_MEMORY,
     ERROR_CONECTIONS_SIZE,
     ERROR_SCENE,
-    ERROR_UNKNOWN_COMAND
+    ERROR_UNKNOWN_COMAND,
+    ERROR_DATA
 };
 
 using error_code_t = enum error_code;

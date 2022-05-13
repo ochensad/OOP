@@ -33,6 +33,9 @@ void error_message(const error_code_t error)
         case ERROR_SCENE:
             QMessageBox::critical(NULL, "Ошибка", "Ошибка при отчистке холста.");
             break;
+        case ERROR_DATA:
+            QMessageBox::critical(NULL, "Ошибка", "Ошибка данных.");
+            break;
         case OK:
             break;
     }

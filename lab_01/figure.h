@@ -5,8 +5,10 @@
 #include "conect.h"
 #include "error_code.h"
 
+
 struct figure
 {
+    center_t center;
     points_t points;
     conections_t conections;
 };
