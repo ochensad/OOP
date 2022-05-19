@@ -17,7 +17,7 @@ class ConstIterator: public std::iterator<std::forward_iterator_tag, Type>
     public:
         // Конструкторы
         ConstIterator() = default;
-        //explicit ConstIterator(std::shared_ptr<SetNode<Type>> ptr);
+        explicit ConstIterator(std::shared_ptr<SetNode<Type>> ptr);
 
         bool operator ==(const ConstIterator<Type>& b) const;
         bool operator !=(const ConstIterator<Type>& b) const;
@@ -37,7 +37,6 @@ class ConstIterator: public std::iterator<std::forward_iterator_tag, Type>
         bool ExcCheck(int line) const;
     private:
         std::weak_ptr<SetNode<Type>> ptr;
-        explicit ConstIterator(std::shared_ptr<SetNode<Type>> ptr);
 };
 
 #include "const_iterator_imp.hpp"
