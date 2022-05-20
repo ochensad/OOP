@@ -10,7 +10,9 @@ CONFIG += c++11
 
 SOURCES += \
     builder/camerabuilder.cpp \
+    config/config.cpp \
     draw/drawers/qtdrawer.cpp \
+    facade/facade.cpp \
     loader/fileloader.cpp \
     managers/draw/drawmanager.cpp \
     managers/draw/drawmanagercreator.cpp \
@@ -33,6 +35,12 @@ SOURCES += \
     visitor/drawvisitor.cpp
 
 HEADERS += \
+    builder/basecamerabuilder.h \
+    command/basecommand.h \
+    command/cameracommands.h \
+    command/scenecommands.h \
+    config/config.h \
+    facade/facade.h \
     loader/absloadcontroller.h \
     loader/baseloader.h \
     builder/basebuilder.h \
@@ -44,6 +52,7 @@ HEADERS += \
     draw/factory/qtfactory.h \
     exeptions/exeptions.h \
     loader/fileloader.h \
+    loader/modelloader.h \
     managers/basemanager.h \
     managers/draw/drawmanager.h \
     managers/draw/drawmanagercreator.h \
@@ -54,6 +63,7 @@ HEADERS += \
     managers/transform/transformmanager.h \
     builder/modelbuilder.h \
     managers/transform/transformmanagercreator.h \
+    command/modelcommands.h \
     object/invisible/camera/camera.h \
     object/composite/composite.h \
     object/visible/model/modelstruct/connect.h \

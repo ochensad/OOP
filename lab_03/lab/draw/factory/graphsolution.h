@@ -4,6 +4,7 @@
 #include "absgraphfactory.h"
 #include <map>
 #include <string>
+#include <memory>
 #include "exeptions/exeptions.h"
 
 class MainWindow;

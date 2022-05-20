@@ -1,6 +1,6 @@
 #include "fileloader.h"
 
-shared_ptr<Object> FileLoader::load(shared_ptr<ModelBuilder> builder)
+shared_ptr<Object> FileLoader::load(shared_ptr<BaseBuilder> builder)
 {
     builder->build();
 

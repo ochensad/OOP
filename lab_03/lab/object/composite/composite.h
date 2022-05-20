@@ -22,7 +22,7 @@ public:
     virtual bool isVisible() const override {return false;};
     virtual void transform(const Point &move, const Point &scale, const Point &turn) override;
     virtual void accept(std::shared_ptr<Visitor> visitor) override;
-
+    std::vector<std::shared_ptr<Object>> getObjects() { return objects; };
 private:
     vector<shared_ptr<Object>> objects;
 };

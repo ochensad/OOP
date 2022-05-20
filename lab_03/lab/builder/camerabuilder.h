@@ -1,11 +1,11 @@
 #ifndef CAMERABUILDER_H
 #define CAMERABUILDER_H
 
-#include "basebuilder.h"
+#include "basecamerabuilder.h"
 #include "object/invisible/camera/camera.h"
 #include "exeptions/exeptions.h"
 
-class CameraBuilder : public BaseBuilder
+class CameraBuilder : public BaseCameraBuilder
 {
 public:
     CameraBuilder() : camera_ptr(nullptr) {};
@@ -14,7 +14,7 @@ public:
     bool isBuild() const override;
     void build() override;
 
-    shared_ptr<Camera> get();
+    shared_ptr<Camera> get() override;
 private:
     shared_ptr<Camera> camera_ptr;
 };

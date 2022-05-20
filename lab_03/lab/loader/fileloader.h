@@ -11,7 +11,7 @@ public:
     FileLoader() = default;
     virtual ~FileLoader() = default;
 
-    virtual shared_ptr<Object> load(shared_ptr<ModelBuilder> builder);
+    virtual shared_ptr<Object> load(shared_ptr<BaseBuilder> builder) override;
     virtual void open(string &fname) override;
     virtual void close() override;
 protected:
