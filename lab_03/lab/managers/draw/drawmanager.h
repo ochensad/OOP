@@ -6,6 +6,7 @@
 #include "object/object.h"
 #include "draw/drawers/basedrawer.h"
 #include "object/invisible/camera/camera.h"
+#include "visitor/drawvisitor.h"
 
 class DrawManager : public BaseManager
 {

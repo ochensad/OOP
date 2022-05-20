@@ -12,7 +12,7 @@ Composite::Composite(vector<shared_ptr<Object>> vector)
 
 size_t Composite::size() const
 {
-        return this->objects.size();
+    return this->objects.size();
 }
 
 bool Composite::add(shared_ptr<Object> com)
@@ -29,7 +29,7 @@ bool Composite::remove(ObjectIterator &iter)
 
 ObjectIterator Composite::begin()
 {
-        return this->objects.begin();
+    return this->objects.begin();
 }
 
 ObjectIterator Composite::end()

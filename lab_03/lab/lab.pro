@@ -9,9 +9,18 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    builder/camerabuilder.cpp \
     draw/drawers/qtdrawer.cpp \
+    loader/fileloader.cpp \
     managers/draw/drawmanager.cpp \
+    managers/draw/drawmanagercreator.cpp \
+    managers/load/loadmanager.cpp \
+    managers/load/loadmanagercreator.cpp \
+    managers/scene/scenemanager.cpp \
+    managers/scene/scenemanagercreator.cpp \
     managers/transform/transformmanager.cpp \
+    builder/modelbuilder.cpp \
+    managers/transform/transformmanagercreator.cpp \
     object/invisible/camera/camera.cpp \
     object/composite/composite.cpp \
     object/visible/model/modelstruct/connect.cpp \
@@ -20,18 +29,31 @@ SOURCES += \
     object/visible/model/model.cpp \
     object/visible/model/modelstruct/modelstructure.cpp \
     object/visible/model/modelstruct/point.cpp \
+    scene/scene.cpp \
     visitor/drawvisitor.cpp
 
 HEADERS += \
+    loader/absloadcontroller.h \
+    loader/baseloader.h \
+    builder/basebuilder.h \
+    builder/camerabuilder.h \
     draw/factory/absgraphfactory.h \
     draw/drawers/basedrawer.h \
     draw/drawers/qtdrawer.h \
     draw/factory/graphsolution.h \
     draw/factory/qtfactory.h \
     exeptions/exeptions.h \
+    loader/fileloader.h \
     managers/basemanager.h \
     managers/draw/drawmanager.h \
+    managers/draw/drawmanagercreator.h \
+    managers/load/loadmanager.h \
+    managers/load/loadmanagercreator.h \
+    managers/scene/scenemanager.h \
+    managers/scene/scenemanagercreator.h \
     managers/transform/transformmanager.h \
+    builder/modelbuilder.h \
+    managers/transform/transformmanagercreator.h \
     object/invisible/camera/camera.h \
     object/composite/composite.h \
     object/visible/model/modelstruct/connect.h \
@@ -42,6 +64,7 @@ HEADERS += \
     object/object.h \
     object/visible/model/modelstruct/point.h \
     object/visible/visibleobject.h \
+    scene/scene.h \
     visitor/drawvisitor.h \
     visitor/visitor.h
 
