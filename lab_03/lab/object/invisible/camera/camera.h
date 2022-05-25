@@ -20,6 +20,7 @@ public:
     virtual void accept(std::shared_ptr<Visitor> visitor) override;
 
     Point getPos() {return cur_pos;};
+    void setPos(double &x, double &y, double &z);
 private:
     Point cur_pos;
 };

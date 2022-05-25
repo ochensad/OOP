@@ -7,6 +7,12 @@ void Camera::transform(const Point &move_val, const Point &rotate_val, const Poi
     this->cur_pos.rotate(rotate_val.getX(), rotate_val.getY(), rotate_val.getZ());
 }
 
+void Camera::setPos(double &x, double &y, double &z)
+{
+    Point buf(x,y,z);
+    this->cur_pos = buf;
+}
+
 void Camera::accept(std::shared_ptr<Visitor> visitor)
 {
     visitor->visit(*this);

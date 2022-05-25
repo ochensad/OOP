@@ -13,6 +13,16 @@ public:
 
     virtual bool isBuild() const = 0;
     virtual void build() = 0;
+};
+
+class BaseModelBuilder : public BaseBuilder
+{
+public:
+    BaseModelBuilder() = default;
+    ~BaseModelBuilder() = default;
+
+    virtual bool isBuild() const = 0;
+    virtual void build() = 0;
 
     virtual void buildPoint(const double &x, const double &y, const double &z) = 0;
     virtual void buildConnect(const size_t &pt1, const size_t &pt2) = 0;

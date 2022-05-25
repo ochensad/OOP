@@ -13,6 +13,7 @@ SOURCES += \
     config/config.cpp \
     draw/drawers/qtdrawer.cpp \
     facade/facade.cpp \
+    loader/filecameraloader.cpp \
     loader/fileloader.cpp \
     managers/draw/drawmanager.cpp \
     managers/draw/drawmanagercreator.cpp \
@@ -51,6 +52,8 @@ HEADERS += \
     draw/factory/graphsolution.h \
     draw/factory/qtfactory.h \
     exeptions/exeptions.h \
+    loader/cameraloader.h \
+    loader/filecameraloader.h \
     loader/fileloader.h \
     loader/modelloader.h \
     managers/basemanager.h \
@@ -85,3 +88,5 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+

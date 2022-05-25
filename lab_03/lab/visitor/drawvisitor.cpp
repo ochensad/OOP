@@ -29,5 +29,5 @@ void DrawVisitor::setCamera(std::shared_ptr<Camera> &camera)
 
 Point DrawVisitor::scenePoint(const Point &_point)
 {
-    return Point(_point.getX() + camera->getPos().getX(), _point.getY() + camera->getPos().getX(), _point.getZ());
+    return Point(_point.getX() + camera->getPos().getX(), _point.getY() + camera->getPos().getY(), _point.getZ());
 }

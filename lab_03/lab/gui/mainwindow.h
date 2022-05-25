@@ -33,6 +33,7 @@ protected:
     const int win_y = 571;
 
     int model_count = -1;
+    int camera_count = -1;
 
     void update_scene();
 
@@ -50,12 +51,15 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     std::shared_ptr<QGraphicsScene> scene;
     std::shared_ptr<Facade> facade;
     std::shared_ptr<BaseDrawer> drawer;
     std::shared_ptr<BaseLoader> loader;
+    std::shared_ptr<BaseLoader> loader_cam;
 
     std::unique_ptr<AbsGraphFactory> createQtDrawerCreator();
     void registration();

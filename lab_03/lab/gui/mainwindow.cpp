@@ -6,6 +6,7 @@
 #include "command/modelcommands.h"
 #include "command/cameracommands.h"
 #include <memory>
+#include "loader/filecameraloader.h"
 
 using namespace std;
 
@@ -61,6 +62,7 @@ void MainWindow::registration()
     }
 
     loader = std::make_shared<FileLoader>();
+    loader_cam = std::make_shared<FileCameraLoader>();
 }
 
 void MainWindow::update_scene()
@@ -85,8 +87,6 @@ void MainWindow::on_loadButton_clicked()
             std::string file_n = filedir + filename;
 
             cout << file_n;
-
-            std::shared_ptr<LoadManager> lm(new LoadManager());
 
             LoadModelCommand load_command(loader, file_n);
 
@@ -193,9 +193,32 @@ void MainWindow::on_scaleButton_clicked()
 
 void MainWindow::on_add_camButton_clicked()
 {
-    std::shared_ptr<Camera> camera(new Camera());
-    AddCameraCommand camera_command(camera);
-    facade->exec(camera_command);
+    try
+        {
+            std::string filedir = "C:\\Users\\79645\\";
+
+            std::string filename = ui->cameraname->text().toStdString();
+
+            std::string file_n = filedir + filename;
+
+            cout << file_n;
+
+            LoadCameraCommand load_command(loader_cam, file_n);
+
+            facade->exec(load_command);
+            this->camera_count++;
+            ui->combocameraBox->addItem(QString::fromStdString(to_string(camera_count)));
+        } catch (const CameraError &error)
+        {
+            QMessageBox::critical(NULL, "Ошибка", "Прежде чем добавлять модель, добавьте хотя бы одну камеру.");
+            return;
+        } catch (const FileError &error)
+        {
+            QMessageBox::critical(NULL, "Ошибка", "Что-то не так пошло при загрузке файла...");
+            return;
+        }
+
+        update_scene();
 }
 
 
@@ -208,7 +231,30 @@ void MainWindow::on_pushButton_2_clicked()
         RemoveModelCommand remove_command(obj);
         facade->exec(remove_command);
         ui->combomodelBox->removeItem(i);
-        i++;
     }
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    try
+        {
+            QString mod = ui->combocameraBox->currentText();
+
+            if (mod == "")
+            {
+                QMessageBox::critical(NULL, "Ошибка", "Модель не выбрана");
+                return;
+            }
+            int index = atoi(mod.toStdString().c_str());
+
+            SetCameraCommand set_command(index);
+            facade->exec(set_command);
+            update_scene();
+        } catch (const CameraError &error)
+        {
+            QMessageBox::critical(NULL, "Ошибка", "Не загружено ни одной модели");
+            return;
+        }
 }
 

@@ -11,6 +11,7 @@ public:
     ~LoadManager() = default;
 
     shared_ptr<Object> load(shared_ptr<AbsLoadController> loader);
+//    shared_ptr<Object> load(shared_ptr<AbsLoadController> loader);
 };
 
 #endif // LOADMANAGER_H

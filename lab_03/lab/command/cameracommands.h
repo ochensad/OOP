@@ -4,6 +4,9 @@
 #include "basecommand.h"
 #include "object/invisible/camera/camera.h"
 #include "managers/scene/scenemanagercreator.h"
+#include "loader/baseloader.h"
+#include "managers/load/loadmanagercreator.h"
+#include "loader/cameraloader.h"
 
 class SetCameraCommand : public BaseCameraCommand
 {
@@ -55,6 +58,29 @@ public:
 private:
     std::shared_ptr<Camera> camera {nullptr};
 };
+
+class LoadCameraCommand : public BaseCameraCommand
+{
+public:
+    LoadCameraCommand() = delete;
+    LoadCameraCommand(std::shared_ptr<BaseLoader> &loader, const std::string &fname) : loader(loader), fname(fname) {};
+    ~LoadCameraCommand() = default;
+
+    virtual void execute() override
+    {
+        loader->open(fname);
+
+        auto new_cam = LoadManagerCreator().createManager()->load(std::make_shared<CameraLoader>(loader));
+        auto camera =  std::dynamic_pointer_cast<Camera>(new_cam);
+        loader->close();
+
+        SceneManagerCreator().createManager()->getScene()->addCamera(camera);
+    }
+
+    private:
+        std::shared_ptr<BaseLoader> loader;
+        std::string fname;
+    };
 
 
 #endif // CAMERACOMMANDS_H
