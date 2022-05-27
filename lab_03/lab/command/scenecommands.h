@@ -11,20 +11,23 @@ class DrawSceneCommand : public BaseSceneCommand
 {
 public:
     DrawSceneCommand() = delete;
-    DrawSceneCommand(std::shared_ptr<BaseDrawer> &drawer, std::shared_ptr<Object> &obj) : drawer(drawer), obj(obj) {};
+    DrawSceneCommand(std::shared_ptr<BaseDrawer> &drawer, int index) : drawer(drawer), index(index) {};
     ~DrawSceneCommand() = default;
 
     virtual void execute() override
     {
-        auto cam = std::make_shared<Camera>(SceneManagerCreator().createManager()->getCamera()->getPos());
-        std::shared_ptr<Visitor> draw_visitor = std::make_shared<DrawVisitor>(drawer, cam);
-
-        DrawManagerCreator().createManager()->drawObject(obj, drawer, cam);
+        auto cam = std::make_shared<Camera>(SceneManagerCreator().createManager()->getScene()->getCamera());
+        auto sce = SceneManagerCreator().createManager()->getScene();
+        auto obj = SceneManagerCreator().createManager()->getScene()->getObjects()->getObjects().at(index);
+        DrawManagerCreator().createManager()->setDrawer(drawer);
+        DrawManagerCreator().createManager()->setCamera(cam);
+        DrawManagerCreator().createManager()->setScene(sce);
+        DrawManagerCreator().createManager()->drawObject(obj);
     }
 
 private:
     std::shared_ptr<BaseDrawer> drawer;
-    std::shared_ptr<Object> obj;
+    int index;
 };
 
 #endif // SCENECOMMANDS_H

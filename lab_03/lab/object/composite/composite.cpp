@@ -42,10 +42,22 @@ bool Composite::isComposite() const
     return true;
 }
 
-void Composite::transform(const Point &move, const Point &scale, const Point &turn)
+void Composite::move(const Point &move)
 {
     for(auto obj : this->objects)
-        obj->transform(move,scale,turn);
+        obj->move(move);
+}
+
+void Composite::scale(const Point &scale)
+{
+    for(auto obj : this->objects)
+        obj->scale(scale);
+}
+
+void Composite::rotate(const Point &rotate)
+{
+    for(auto obj : this->objects)
+        obj->rotate(rotate);
 }
 
 void Composite::accept(std::shared_ptr<Visitor> visitor)

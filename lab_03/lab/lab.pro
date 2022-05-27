@@ -13,8 +13,12 @@ SOURCES += \
     config/config.cpp \
     draw/drawers/qtdrawer.cpp \
     facade/facade.cpp \
-    loader/filecameraloader.cpp \
-    loader/fileloader.cpp \
+    loader/camera/cameraloadcontroller.cpp \
+    loader/camera/cameraloadcontrollercreator.cpp \
+    loader/camera/cameraloader.cpp \
+    loader/model/modelloadcontroller.cpp \
+    loader/model/modelloadcontrollercreator.cpp \
+    loader/model/modelloader.cpp \
     managers/draw/drawmanager.cpp \
     managers/draw/drawmanagercreator.cpp \
     managers/load/loadmanager.cpp \
@@ -36,13 +40,16 @@ SOURCES += \
     visitor/drawvisitor.cpp
 
 HEADERS += \
+    config/absconfig.h \
+    loader/camera/basecameraloader.h \
+    loader/baseloadcontroller.h \
+    loader/baseloader.h \
     builder/basecamerabuilder.h \
     command/basecommand.h \
     command/cameracommands.h \
     command/scenecommands.h \
     config/config.h \
     facade/facade.h \
-    loader/absloadcontroller.h \
     loader/baseloader.h \
     builder/basebuilder.h \
     builder/camerabuilder.h \
@@ -52,10 +59,13 @@ HEADERS += \
     draw/factory/graphsolution.h \
     draw/factory/qtfactory.h \
     exeptions/exeptions.h \
-    loader/cameraloader.h \
-    loader/filecameraloader.h \
-    loader/fileloader.h \
-    loader/modelloader.h \
+    loader/camera/cameraloadcontroller.h \
+    loader/camera/cameraloadcontrollercreator.h \
+    loader/model/basemodelloader.h \
+    loader/camera/cameraloader.h \
+    loader/model/modelloadcontroller.h \
+    loader/model/modelloadcontrollercreator.h \
+    loader/model/modelloader.h \
     managers/basemanager.h \
     managers/draw/drawmanager.h \
     managers/draw/drawmanagercreator.h \

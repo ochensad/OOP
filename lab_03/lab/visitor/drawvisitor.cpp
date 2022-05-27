@@ -8,7 +8,7 @@ void DrawVisitor::visit(Model &model)
 
     for(auto connect: model.getStructure()->getConnections())
     {
-        this->drawer->drawLine(scenePoint(points.at(connect.getFirstPoint())), points.at(connect.getSecondPoint()));
+        this->drawer->drawLine(scenePoint(points.at(connect.getFirstPoint())), scenePoint(points.at(connect.getSecondPoint())));
     }
 }
 
@@ -29,5 +29,5 @@ void DrawVisitor::setCamera(std::shared_ptr<Camera> &camera)
 
 Point DrawVisitor::scenePoint(const Point &_point)
 {
-    return Point(_point.getX() + camera->getPos().getX(), _point.getY() + camera->getPos().getY(), _point.getZ());
+    return Point(_point.getX() + camera->getPos().getX() + 571/2, _point.getY() + camera->getPos().getY() + 561/2, _point.getZ());
 }

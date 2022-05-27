@@ -9,7 +9,7 @@
 class Scene
 {
 public:
-    Scene() : objects(make_shared<Composite>()) {};
+    Scene() : objects(make_shared<Composite>()), cur_camera(0) {};
     ~Scene() = default;
 
     bool addObject(shared_ptr<Object> &obj);
@@ -21,9 +21,12 @@ public:
     vector<shared_ptr<Camera>> getCameras();
     shared_ptr<Composite> getObjects();
 
+    void setCamera(size_t index);
+    shared_ptr<Camera> getCamera() const;
 protected:
     shared_ptr<Composite> objects;
     vector<shared_ptr<Camera>> cameras;
+    size_t cur_camera;
 };
 
 #endif // SCENE_H

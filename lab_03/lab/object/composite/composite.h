@@ -20,7 +20,9 @@ public:
 
     virtual bool isComposite() const override;
     virtual bool isVisible() const override {return false;};
-    virtual void transform(const Point &move, const Point &scale, const Point &turn) override;
+    virtual void move(const Point &move) override;
+    virtual void scale(const Point &scale) override;
+    virtual void rotate(const Point &rotate) override;
     virtual void accept(std::shared_ptr<Visitor> visitor) override;
     std::vector<std::shared_ptr<Object>> getObjects() { return objects; };
 private:

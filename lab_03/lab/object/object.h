@@ -26,7 +26,9 @@ public:
     virtual bool isComposite() const {return false;};
     virtual bool isVisible() const {return false;};
     virtual void accept(shared_ptr<Visitor> visitor) = 0;
-    virtual void transform(const Point &move, const Point &scale, const Point &turn) = 0;
+    virtual void move(const Point &move) = 0;
+    virtual void scale(const Point &scale) = 0;
+    virtual void rotate(const Point &rotate) = 0;
 
 };
 

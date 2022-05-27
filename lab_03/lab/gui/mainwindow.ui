@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>800</height>
+    <height>752</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
     <property name="geometry">
      <rect>
       <x>580</x>
-      <y>70</y>
+      <y>10</y>
       <width>211</width>
       <height>141</height>
      </rect>
@@ -155,45 +155,11 @@ QPushButton:pressed {
      </property>
     </widget>
    </widget>
-   <widget class="QPushButton" name="loadButton">
-    <property name="geometry">
-     <rect>
-      <x>580</x>
-      <y>40</y>
-      <width>211</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-                                  display: inline-block;
-                                  font-size: 12px;
-                                  cursor: pointer;
-                                  text-align: center;
-                                  text-decoration: none;
-                                  outline: none;
-                                  color: #fff;
-                                  background-color: #4CAF50;
-                                  border: none;
-                                  border-radius: 10px;
-                                  box-shadow: 0 9px #999;
-                                }
-QPushButton:hover {background-color: #3e8e41}
-QPushButton:pressed {
-                                  background-color: #3e8e41;
-                                  box-shadow: 0 5px #666;
-                                  transform: translateY(4px);
-                               }</string>
-    </property>
-    <property name="text">
-     <string>Load model</string>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
       <x>580</x>
-      <y>210</y>
+      <y>160</y>
       <width>211</width>
       <height>141</height>
      </rect>
@@ -324,7 +290,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>580</x>
-      <y>350</y>
+      <y>310</y>
       <width>211</width>
       <height>151</height>
      </rect>
@@ -419,9 +385,9 @@ QPushButton:pressed {
     <widget class="QPushButton" name="scaleButton">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>117</y>
-       <width>181</width>
+       <width>191</width>
        <height>21</height>
       </rect>
      </property>
@@ -451,23 +417,13 @@ QPushButton:pressed {
      </property>
     </widget>
    </widget>
-   <widget class="QLineEdit" name="model_name">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>10</y>
-      <width>191</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>560</y>
+      <x>580</x>
+      <y>470</y>
       <width>211</width>
-      <height>51</height>
+      <height>151</height>
      </rect>
     </property>
     <property name="title">
@@ -476,21 +432,167 @@ QPushButton:pressed {
     <widget class="QComboBox" name="combomodelBox">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>191</width>
+       <x>110</x>
+       <y>50</y>
+       <width>91</width>
        <height>22</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="model_name">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>20</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="loadButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+                                  display: inline-block;
+                                  font-size: 12px;
+                                  cursor: pointer;
+                                  text-align: center;
+                                  text-decoration: none;
+                                  outline: none;
+                                  color: #fff;
+                                  background-color: #4CAF50;
+                                  border: none;
+                                  border-radius: 10px;
+                                  box-shadow: 0 9px #999;
+                                }
+QPushButton:hover {background-color: #3e8e41}
+QPushButton:pressed {
+                                  background-color: #3e8e41;
+                                  box-shadow: 0 5px #666;
+                                  transform: translateY(4px);
+                               }</string>
+     </property>
+     <property name="text">
+      <string>Load model</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="set_model_button">
+     <property name="geometry">
+      <rect>
+       <x>9</x>
+       <y>50</y>
+       <width>91</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+                                  display: inline-block;
+                                  font-size: 12px;
+                                  cursor: pointer;
+                                  text-align: center;
+                                  text-decoration: none;
+                                  outline: none;
+                                  color: #fff;
+                                  background-color: #4CAF50;
+                                  border: none;
+                                  border-radius: 10px;
+                                  box-shadow: 0 9px #999;
+                                }
+QPushButton:hover {background-color: #3e8e41}
+QPushButton:pressed {
+                                  background-color: #3e8e41;
+                                  box-shadow: 0 5px #666;
+                                  transform: translateY(4px);
+                               }</string>
+     </property>
+     <property name="text">
+      <string>Set model</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="delete_model_button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>191</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+                                  display: inline-block;
+                                  font-size: 12px;
+                                  cursor: pointer;
+                                  text-align: center;
+                                  text-decoration: none;
+                                  outline: none;
+                                  color: #fff;
+                                  background-color: #4CAF50;
+                                  border: none;
+                                  border-radius: 10px;
+                                  box-shadow: 0 9px #999;
+                                }
+QPushButton:hover {background-color: #3e8e41}
+QPushButton:pressed {
+                                  background-color: #3e8e41;
+                                  box-shadow: 0 5px #666;
+                                  transform: translateY(4px);
+                               }</string>
+     </property>
+     <property name="text">
+      <string>Delete model</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="clear_Button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>191</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+                              display: inline-block;
+                              font-size: 12px;
+                              cursor: pointer;
+                              text-align: center;
+                              text-decoration: none;
+                              outline: none;
+                              color: #fff;
+                              background-color: #DC143C;
+                              border: none;
+                              border-radius: 10px;
+                              box-shadow: 0 9px #999;
+                           }
+QPushButton:hover {background-color: #B22222}
+QPushButton:pressed {
+                              background-color: #B22222;
+                              box-shadow: 0 5px #666;
+                              transform: translateY(4px);
+                            }</string>
+     </property>
+     <property name="text">
+      <string>Delete all models</string>
      </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_5">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>510</y>
-      <width>211</width>
-      <height>111</height>
+      <x>20</x>
+      <y>560</y>
+      <width>451</width>
+      <height>81</height>
      </rect>
     </property>
     <property name="title">
@@ -500,10 +602,31 @@ QPushButton:pressed {
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
+       <y>20</y>
        <width>91</width>
        <height>21</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+                                  display: inline-block;
+                                  font-size: 12px;
+                                  cursor: pointer;
+                                  text-align: center;
+                                  text-decoration: none;
+                                  outline: none;
+                                  color: #fff;
+                                  background-color: #4CAF50;
+                                  border: none;
+                                  border-radius: 10px;
+                                  box-shadow: 0 9px #999;
+                                }
+QPushButton:hover {background-color: #3e8e41}
+QPushButton:pressed {
+                                  background-color: #3e8e41;
+                                  box-shadow: 0 5px #666;
+                                  transform: translateY(4px);
+                               }</string>
      </property>
      <property name="text">
       <string>Add camera</string>
@@ -512,9 +635,9 @@ QPushButton:pressed {
     <widget class="QComboBox" name="combocameraBox">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>191</width>
+       <x>110</x>
+       <y>50</y>
+       <width>91</width>
        <height>22</height>
       </rect>
      </property>
@@ -522,11 +645,32 @@ QPushButton:pressed {
     <widget class="QPushButton" name="pushButton">
      <property name="geometry">
       <rect>
-       <x>110</x>
-       <y>80</y>
+       <x>10</x>
+       <y>50</y>
        <width>91</width>
        <height>21</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+                                  display: inline-block;
+                                  font-size: 12px;
+                                  cursor: pointer;
+                                  text-align: center;
+                                  text-decoration: none;
+                                  outline: none;
+                                  color: #fff;
+                                  background-color: #4CAF50;
+                                  border: none;
+                                  border-radius: 10px;
+                                  box-shadow: 0 9px #999;
+                                }
+QPushButton:hover {background-color: #3e8e41}
+QPushButton:pressed {
+                                  background-color: #3e8e41;
+                                  box-shadow: 0 5px #666;
+                                  transform: translateY(4px);
+                               }</string>
      </property>
      <property name="text">
       <string>Set camera</string>
@@ -535,26 +679,183 @@ QPushButton:pressed {
     <widget class="QLineEdit" name="cameraname">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>50</y>
-       <width>191</width>
+       <x>110</x>
+       <y>20</y>
+       <width>91</width>
        <height>20</height>
       </rect>
      </property>
     </widget>
-   </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>360</x>
-      <y>580</y>
-      <width>211</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Clear scene</string>
-    </property>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>50</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+                                  display: inline-block;
+                                  font-size: 12px;
+                                  cursor: pointer;
+                                  text-align: center;
+                                  text-decoration: none;
+                                  outline: none;
+                                  color: #fff;
+                                  background-color: #4CAF50;
+                                  border: none;
+                                  border-radius: 10px;
+                                  box-shadow: 0 9px #999;
+                                }
+QPushButton:hover {background-color: #3e8e41}
+QPushButton:pressed {
+                                  background-color: #3e8e41;
+                                  box-shadow: 0 5px #666;
+                                  transform: translateY(4px);
+                               }</string>
+     </property>
+     <property name="text">
+      <string>Delete camera</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="move_left_cam">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>40</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+                                  display: inline-block;
+                                  font-size: 16px;
+                                  cursor: pointer;
+                                  text-align: center;
+                                  text-decoration: none;
+                                  outline: none;
+                                  color: #fff;
+                                  background-color: #4CAF50;
+                                  border: none;
+                                  border-radius: 10px;
+                                  box-shadow: 0 9px #999;
+                                }
+QPushButton:hover {background-color: #3e8e41}
+QPushButton:pressed {
+                                  background-color: #3e8e41;
+                                  box-shadow: 0 5px #666;
+                                  transform: translateY(4px);
+                               }</string>
+     </property>
+     <property name="text">
+      <string>🠔</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="move_right_cam">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>40</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+                                  display: inline-block;
+                                  font-size: 16px;
+                                  cursor: pointer;
+                                  text-align: center;
+                                  text-decoration: none;
+                                  outline: none;
+                                  color: #fff;
+                                  background-color: #4CAF50;
+                                  border: none;
+                                  border-radius: 10px;
+                                  box-shadow: 0 9px #999;
+                                }
+QPushButton:hover {background-color: #3e8e41}
+QPushButton:pressed {
+                                  background-color: #3e8e41;
+                                  box-shadow: 0 5px #666;
+                                  transform: translateY(4px);
+                               }</string>
+     </property>
+     <property name="text">
+      <string>🠖</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="move_up_cam">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>19</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+                                  display: inline-block;
+                                  font-size: 16px;
+                                  cursor: pointer;
+                                  text-align: center;
+                                  text-decoration: none;
+                                  outline: none;
+                                  color: #fff;
+                                  background-color: #4CAF50;
+                                  border: none;
+                                  border-radius: 10px;
+                                  box-shadow: 0 9px #999;
+                                }
+QPushButton:hover {background-color: #3e8e41}
+QPushButton:pressed {
+                                  background-color: #3e8e41;
+                                  box-shadow: 0 5px #666;
+                                  transform: translateY(4px);
+                               }</string>
+     </property>
+     <property name="text">
+      <string>🠕</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="move_down_cam">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>60</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+                                  display: inline-block;
+                                  font-size: 16px;
+                                  cursor: pointer;
+                                  text-align: center;
+                                  text-decoration: none;
+                                  outline: none;
+                                  color: #fff;
+                                  background-color: #4CAF50;
+                                  border: none;
+                                  border-radius: 10px;
+                                  box-shadow: 0 9px #999;
+                                }
+QPushButton:hover {background-color: #3e8e41}
+QPushButton:pressed {
+                                  background-color: #3e8e41;
+                                  box-shadow: 0 5px #666;
+                                  transform: translateY(4px);
+                               }</string>
+     </property>
+     <property name="text">
+      <string>🠗</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

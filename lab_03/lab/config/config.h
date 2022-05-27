@@ -16,7 +16,7 @@ public:
     AbsConfig(std::string source = nullptr) : source(std::move(source)) {};
 
     virtual void readConfig() = 0;
-    virtual std::string getFrame() = 0;
+    virtual std::string getLib() = 0;
     virtual std::string getLoadSource() = 0;
 
 protected:
@@ -29,7 +29,7 @@ public:
     GraphLibConfig(std::string source = nullptr): AbsConfig(source) {};
 
     virtual void readConfig() override;
-    virtual std::string getFrame() override;
+    virtual std::string getLib() override;
     virtual std::string getLoadSource() override;
 
 private:

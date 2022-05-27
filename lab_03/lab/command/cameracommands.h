@@ -6,7 +6,6 @@
 #include "managers/scene/scenemanagercreator.h"
 #include "loader/baseloader.h"
 #include "managers/load/loadmanagercreator.h"
-#include "loader/cameraloader.h"
 
 class SetCameraCommand : public BaseCameraCommand
 {
@@ -18,7 +17,7 @@ public:
 
     virtual void execute() override
     {
-        SceneManagerCreator().createManager()->setCamera(camera_num);
+        SceneManagerCreator().createManager()->getScene()->setCamera(camera_num);
     }
 
 private:
@@ -63,24 +62,43 @@ class LoadCameraCommand : public BaseCameraCommand
 {
 public:
     LoadCameraCommand() = delete;
-    LoadCameraCommand(std::shared_ptr<BaseLoader> &loader, const std::string &fname) : loader(loader), fname(fname) {};
+    LoadCameraCommand(const std::string conf, const std::string &fname) : config_file(conf), fname(fname) {};
     ~LoadCameraCommand() = default;
 
     virtual void execute() override
     {
-        loader->open(fname);
-
-        auto new_cam = LoadManagerCreator().createManager()->load(std::make_shared<CameraLoader>(loader));
-        auto camera =  std::dynamic_pointer_cast<Camera>(new_cam);
-        loader->close();
-
-        SceneManagerCreator().createManager()->getScene()->addCamera(camera);
+        auto moderator = CameraLoadControllerCreator(config_file).createController();
+        auto manager = LoadManagerCreator().create_manager(moderator);
+        auto new_obj = manager->load_camera(fname);
+        SceneManagerCreator().createManager()->getScene()->addCamera(new_obj);
     }
 
-    private:
-        std::shared_ptr<BaseLoader> loader;
-        std::string fname;
+private:
+    std::string config_file;
+    std::string fname;
+};
+
+class MoveCameraCommand : public BaseCameraCommand
+{
+public:
+    MoveCameraCommand() = delete;
+    ~MoveCameraCommand() = default;
+
+    MoveCameraCommand(int index_n, double dx, double dy) : index(index_n)
+    {
+      Point buf(dx, dy, 0.0);
+      move = buf;
     };
+
+    virtual void execute() override
+    {
+        SceneManagerCreator().createManager()->getScene()->getCameras().at(index)->move(move);
+    }
+
+private:
+    int index;
+    Point move;
+};
 
 
 #endif // CAMERACOMMANDS_H

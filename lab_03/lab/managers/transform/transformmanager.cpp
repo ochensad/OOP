@@ -1,6 +1,16 @@
 #include "transformmanager.h"
 
-void TransformManager::transformObject(shared_ptr<Object> &obj, const Point &move, const Point &scale, const Point &turn)
+void TransformManager::moveObject(shared_ptr<Object> &obj, const Point &move)
 {
-    obj->transform(move, scale, turn);
+    obj->move(move);
+}
+
+void TransformManager::scaleObject(shared_ptr<Object> &obj, const Point &scale)
+{
+    obj->scale(scale);
+}
+
+void TransformManager::rotateObject(shared_ptr<Object> &obj, const Point &rotate)
+{
+    obj->rotate(rotate);
 }

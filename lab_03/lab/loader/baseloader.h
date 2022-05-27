@@ -1,17 +1,15 @@
 #ifndef BASELOADER_H
 #define BASELOADER_H
 
-#include "builder/basebuilder.h"
-#include "object/object.h"
+#include <string>
+#include <fstream>
 
-class BaseLoader
-{
+class BaseLoader {
 public:
     BaseLoader() = default;
     virtual ~BaseLoader() = default;
 
-    virtual void open(string &fname) = 0;
-    virtual std::shared_ptr<Object> load(std::shared_ptr<BaseBuilder> builder) = 0;
+    virtual void open(std::string &file_name) = 0;
     virtual void close() = 0;
 };
 

@@ -10,12 +10,9 @@ public:
     ~SceneManager() = default;
 
     shared_ptr<Scene> getScene() const;
-    shared_ptr<Camera> getCamera() const;
 
     void setScene(shared_ptr<Scene>);
-    void setCamera(const size_t camera_id);
 protected:
-    shared_ptr<Camera> camera;
     shared_ptr<Scene> scene;
 };
 

@@ -6,7 +6,6 @@
 #include "command/modelcommands.h"
 #include "command/cameracommands.h"
 #include <memory>
-#include "loader/filecameraloader.h"
 
 using namespace std;
 
@@ -15,14 +14,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->registration();
-    ui->graphicsView->setScene(scene.get());
+    setup_scene();
 
-    auto b = make_shared<Camera>() ;
-    SceneManagerCreator().createManager()->getScene()->addCamera(b);
-
-    SetCameraCommand com(0);
-    facade->exec(com);
+    facade = std::make_shared<Facade>(Facade());
 }
 
 MainWindow::~MainWindow()
@@ -30,49 +24,43 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-std::unique_ptr<AbsGraphFactory> MainWindow::createQtDrawerCreator()
+void MainWindow::setup_scene()
 {
     scene = std::shared_ptr<QGraphicsScene>(new QGraphicsScene());
+
+    ui->graphicsView->setScene(scene.get());
+    ui->graphicsView->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    ui->graphicsView->setStyleSheet("QGraphicsView {background-color: white}");
+
+    auto cont = ui->graphicsView->contentsRect();
+    scene->setSceneRect(0, 0, cont.width(), cont.height());
     std::shared_ptr<QPen> pen (new QPen(Qt::red));
-    //std::shared_ptr<QBrush> brush (new QBrush(Qt::white));
-
-    return std::unique_ptr<AbsGraphFactory>(new QtFactory(scene, pen));
-}
-
-void MainWindow::registration()
-{
-    std::string configName = "C:\\Users\\79645\\config.txt";
-
-    GraphLibConfig conf(configName);
-    conf.readConfig();
-    std::string ls = conf.getLoadSource();
-    std::string fr = conf.getFrame();
-    cout << fr;
-
-    GraphSolution graphicsSolution;
-    graphicsSolution.registration("qt", &MainWindow::createQtDrawerCreator);
-
-    std::shared_ptr<AbsGraphFactory>factory(graphicsSolution.create(this, fr));
+    std::shared_ptr<AbsGraphFactory> factory(new QtFactory(scene, pen));
     drawer = factory->createGraphics();
-
-    if (ls != "file")
-    {
-        std::string s = "Неизвестный загрузчик";
-        throw FileError(s);
-    }
-
-    loader = std::make_shared<FileLoader>();
-    loader_cam = std::make_shared<FileCameraLoader>();
 }
 
 void MainWindow::update_scene()
 {
     drawer->clearScene();
 
-    for(auto obj: SceneManagerCreator().createManager()->getScene()->getObjects()->getObjects())
+    QString mod = ui->combomodelBox->currentText();
+
+    if (mod == "")
     {
-        DrawSceneCommand draw_command(drawer, obj);
-        facade->exec(draw_command);
+        return;
+    }
+    int index = ui->combomodelBox->currentIndex();
+
+    DrawSceneCommand draw_command(drawer, index);
+    facade->exec(draw_command);
+}
+
+void MainWindow::check_cam_exist()
+{
+    if (SceneManagerCreator().createManager()->getScene()->getCameras().size() == 0)
+    {
+        std::string msg = "No camera found.";
+        throw CameraError(msg);
     }
 }
 
@@ -80,7 +68,9 @@ void MainWindow::on_loadButton_clicked()
 {
     try
         {
+            check_cam_exist();
             std::string filedir = "C:\\Users\\79645\\";
+            std::string confdir = "C:\\Users\\79645\\config.txt";
 
             std::string filename = ui->model_name->text().toStdString();
 
@@ -88,11 +78,11 @@ void MainWindow::on_loadButton_clicked()
 
             cout << file_n;
 
-            LoadModelCommand load_command(loader, file_n);
+            LoadModelCommand load_command(confdir, file_n);
 
             facade->exec(load_command);
             this->model_count++;
-            ui->combomodelBox->addItem(QString::fromStdString(to_string(model_count)));
+            ui->combomodelBox->addItem(ui->model_name->text());
         } catch (const CameraError &error)
         {
             QMessageBox::critical(NULL, "Ошибка", "Прежде чем добавлять модель, добавьте хотя бы одну камеру.");
@@ -103,7 +93,7 @@ void MainWindow::on_loadButton_clicked()
             return;
         }
 
-        update_scene();
+        //update_scene();
 }
 
 
@@ -122,7 +112,7 @@ void MainWindow::on_moveButton_clicked()
                 QMessageBox::critical(NULL, "Ошибка", "Модель не выбрана");
                 return;
             }
-            int index = atoi(mod.toStdString().c_str());
+            int index = ui->combomodelBox->currentIndex();
             MoveModelCommand move_command(x, y, z, index);
             facade->exec(move_command);
             update_scene();
@@ -150,7 +140,7 @@ void MainWindow::on_rotateButton_clicked()
                 QMessageBox::critical(NULL, "Ошибка", "Модель не выбрана");
                 return;
             }
-            int index = atoi(mod.toStdString().c_str());
+            int index = ui->combomodelBox->currentIndex();
 
             RotateModelCommand rotate_command(x, y, z, index);
             facade->exec(rotate_command);
@@ -178,7 +168,7 @@ void MainWindow::on_scaleButton_clicked()
                 QMessageBox::critical(NULL, "Ошибка", "Модель не выбрана");
                 return;
             }
-            int index = atoi(mod.toStdString().c_str());
+            int index = ui->combomodelBox->currentIndex();
 
             ScaleModelCommand scale_command(x, y, z, index);
             facade->exec(scale_command);
@@ -202,12 +192,12 @@ void MainWindow::on_add_camButton_clicked()
             std::string file_n = filedir + filename;
 
             cout << file_n;
-
-            LoadCameraCommand load_command(loader_cam, file_n);
+            std::string confdir = "C:\\Users\\79645\\config.txt";
+            LoadCameraCommand load_command(confdir, file_n);
 
             facade->exec(load_command);
             this->camera_count++;
-            ui->combocameraBox->addItem(QString::fromStdString(to_string(camera_count)));
+            ui->combocameraBox->addItem(ui->cameraname->text());
         } catch (const CameraError &error)
         {
             QMessageBox::critical(NULL, "Ошибка", "Прежде чем добавлять модель, добавьте хотя бы одну камеру.");
@@ -218,22 +208,8 @@ void MainWindow::on_add_camButton_clicked()
             return;
         }
 
-        update_scene();
+        //update_scene();
 }
-
-
-void MainWindow::on_pushButton_2_clicked()
-{
-    drawer->clearScene();
-    int i = 0;
-    for(auto obj: SceneManagerCreator().createManager()->getScene()->getObjects()->getObjects())
-    {
-        RemoveModelCommand remove_command(obj);
-        facade->exec(remove_command);
-        ui->combomodelBox->removeItem(i);
-    }
-}
-
 
 void MainWindow::on_pushButton_clicked()
 {
@@ -243,10 +219,10 @@ void MainWindow::on_pushButton_clicked()
 
             if (mod == "")
             {
-                QMessageBox::critical(NULL, "Ошибка", "Модель не выбрана");
+                QMessageBox::critical(NULL, "Ошибка", "Камера не выбрана");
                 return;
             }
-            int index = atoi(mod.toStdString().c_str());
+            int index = ui->combocameraBox->currentIndex();
 
             SetCameraCommand set_command(index);
             facade->exec(set_command);
@@ -256,5 +232,131 @@ void MainWindow::on_pushButton_clicked()
             QMessageBox::critical(NULL, "Ошибка", "Не загружено ни одной модели");
             return;
         }
+    update_scene();
+}
+
+
+void MainWindow::on_clear_Button_clicked()
+{
+    drawer->clearScene();
+    int i = 0;
+    for(auto obj: SceneManagerCreator().createManager()->getScene()->getObjects()->getObjects())
+    {
+        RemoveModelCommand remove_command(obj);
+        facade->exec(remove_command);
+        ui->combomodelBox->removeItem(i);
+    }
+    update_scene();
+}
+
+
+void MainWindow::on_set_model_button_clicked()
+{
+    QString mod = ui->combomodelBox->currentText();
+
+    if (mod == "")
+    {
+        QMessageBox::critical(NULL, "Ошибка", "Модель не выбрана");
+        return;
+    }
+    update_scene();
+}
+
+
+void MainWindow::on_delete_model_button_clicked()
+{
+    QString mod = ui->combomodelBox->currentText();
+
+    if (mod == "")
+    {
+        QMessageBox::critical(NULL, "Ошибка", "Модель не выбрана");
+        return;
+    }
+    int index = ui->combomodelBox->currentIndex();
+    RemoveModelCommand rem_command(SceneManagerCreator().createManager()->getScene()->getObjects()->getObjects().at(index));
+    facade->exec(rem_command);
+    ui->combomodelBox->removeItem(index);
+    update_scene();
+}
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    QString mod = ui->combocameraBox->currentText();
+
+    if (mod == "")
+    {
+        QMessageBox::critical(NULL, "Ошибка", "Камера не выбрана");
+        return;
+    }
+    int index = ui->combocameraBox->currentIndex();
+    RemoveCameraCommand rem_command(index);
+    facade->exec(rem_command);
+    ui->combocameraBox->removeItem(index);
+    update_scene();
+}
+
+
+void MainWindow::on_move_up_cam_clicked()
+{
+    QString mod = ui->combocameraBox->currentText();
+
+    if (mod == "")
+    {
+        QMessageBox::critical(NULL, "Ошибка", "Камера не выбрана");
+        return;
+    }
+    int index = ui->combocameraBox->currentIndex();
+    MoveCameraCommand m_command(index, 0, 10);
+    facade->exec(m_command);
+    update_scene();
+}
+
+
+void MainWindow::on_move_right_cam_clicked()
+{
+    QString mod = ui->combocameraBox->currentText();
+
+    if (mod == "")
+    {
+        QMessageBox::critical(NULL, "Ошибка", "Камера не выбрана");
+        return;
+    }
+    int index = ui->combocameraBox->currentIndex();
+    MoveCameraCommand m_command(index, -10, 0);
+    facade->exec(m_command);
+    update_scene();
+}
+
+
+void MainWindow::on_move_left_cam_clicked()
+{
+    QString mod = ui->combocameraBox->currentText();
+
+    if (mod == "")
+    {
+        QMessageBox::critical(NULL, "Ошибка", "Камера не выбрана");
+        return;
+    }
+    int index = ui->combocameraBox->currentIndex();
+    MoveCameraCommand m_command(index, 10, 0);
+    facade->exec(m_command);
+    update_scene();
+}
+
+
+void MainWindow::on_move_down_cam_clicked()
+{
+    QString mod = ui->combocameraBox->currentText();
+
+    if (mod == "")
+    {
+        QMessageBox::critical(NULL, "Ошибка", "Камера не выбрана");
+        return;
+    }
+    int index = ui->combocameraBox->currentIndex();
+    MoveCameraCommand m_command(index, 0, -10);
+    facade->exec(m_command);
+    update_scene();
 }
 

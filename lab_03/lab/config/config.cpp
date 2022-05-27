@@ -19,7 +19,7 @@ void GraphLibConfig::readConfig()
 
 }
 
-std::string GraphLibConfig::getFrame()
+std::string GraphLibConfig::getLib()
 {
     return frame;
 }

@@ -24,7 +24,9 @@ public:
 
     virtual bool isComposite() const override {return false;};
     virtual bool isVisible() const override {return true;};
-    virtual void transform(const Point &move, const Point &scale, const Point &rotate) override;
+    virtual void move(const Point &move) override;
+    virtual void scale(const Point &scale) override;
+    virtual void rotate(const Point &rotate) override;
     virtual void accept(shared_ptr<Visitor> visitor) override;
 private:
     shared_ptr<ModelStructure> structure;

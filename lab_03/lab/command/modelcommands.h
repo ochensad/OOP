@@ -7,7 +7,6 @@
 #include "managers/load/loadmanagercreator.h"
 #include "scene/scene.h"
 #include "loader/baseloader.h"
-#include "loader/modelloader.h"
 
 #include <algorithm>
 
@@ -15,9 +14,9 @@ class MoveModelCommand : public BaseModelCommand
 {
 public:
     MoveModelCommand() = delete;
-    MoveModelCommand(const double &dx, const double &dy, const double &dz, const size_t model_num)
+    MoveModelCommand(const double &dx, const double &dy, const double &dz, int index)
     {
-        model_numb = model_num;
+        this->cur_index = index;
         Point buf(dx, dy, dz);
         this->move.setPos(buf);
     }
@@ -25,12 +24,11 @@ public:
 
     virtual void execute() override
     {
-        std::shared_ptr<Object> model = SceneManagerCreator().createManager()->getScene()->getObjects()->getObjects().at(model_numb);
-        TransformManagerCreator().createManager()->transformObject(model, move, Point(1, 1, 1), Point(0, 0, 0));
+        shared_ptr<Object> model = SceneManagerCreator().createManager()->getScene()->getObjects()->getObjects().at(cur_index);
+        TransformManagerCreator().createManager()->moveObject(model, move);
     }
 private:
-    size_t model_numb;
-
+    int cur_index;
     Point move;
 };
 
@@ -38,9 +36,9 @@ class ScaleModelCommand : public BaseModelCommand
 {
 public:
     ScaleModelCommand() = delete;
-    ScaleModelCommand(const double &kx, const double &ky, const double &kz, const size_t model_num)
+    ScaleModelCommand(const double &kx, const double &ky, const double &kz, int index)
     {
-        model_numb = model_num;
+        this->cur_index = index;
         Point buf(kx, ky, kz);
         this->scale.setPos(buf);
     }
@@ -48,12 +46,11 @@ public:
 
     virtual void execute() override
     {
-        std::shared_ptr<Object> model = SceneManagerCreator().createManager()->getScene()->getObjects()->getObjects().at(model_numb);
-        TransformManagerCreator().createManager()->transformObject(model, Point(0, 0, 0), scale, Point(0, 0, 0));
+        shared_ptr<Object> model = SceneManagerCreator().createManager()->getScene()->getObjects()->getObjects().at(cur_index);
+        TransformManagerCreator().createManager()->scaleObject(model, scale);
     }
 private:
-    size_t model_numb;
-
+    int cur_index;
     Point scale;
 };
 
@@ -61,9 +58,9 @@ class RotateModelCommand : public BaseModelCommand
 {
 public:
     RotateModelCommand() = delete;
-    RotateModelCommand(const double &kx, const double &ky, const double &kz, const size_t model_num)
+    RotateModelCommand(const double &kx, const double &ky, const double &kz, int index)
     {
-        model_numb = model_num;
+        this->cur_index = index;
         Point buf(kx, ky, kz);
         this->rotate.setPos(buf);
     }
@@ -71,12 +68,11 @@ public:
 
     virtual void execute() override
     {
-        std::shared_ptr<Object> model = SceneManagerCreator().createManager()->getScene()->getObjects()->getObjects().at(model_numb);
-        TransformManagerCreator().createManager()->transformObject(model, Point(0, 0, 0), Point(1, 1, 1), rotate);
+        shared_ptr<Object> model = SceneManagerCreator().createManager()->getScene()->getObjects()->getObjects().at(cur_index);
+        TransformManagerCreator().createManager()->rotateObject(model, rotate);
     }
 private:
-    size_t model_numb;
-
+    int cur_index;
     Point rotate;
 };
 
@@ -115,21 +111,19 @@ class LoadModelCommand : public BaseModelCommand
 {
 public:
     LoadModelCommand() = delete;
-    LoadModelCommand(std::shared_ptr<BaseLoader> &loader, const std::string &fname) : loader(loader), fname(fname) {};
+    LoadModelCommand(std::string conf, const std::string &fname) : config_file(conf), fname(fname) {};
     ~LoadModelCommand() = default;
 
     virtual void execute() override
     {
-        loader->open(fname);
-
-        auto new_obj = LoadManagerCreator().createManager()->load(std::make_shared<ModelLoader>(loader));
-        loader->close();
-
+        auto moderator = ModelLoadControllerCreator(config_file).createController();
+        auto manager = LoadManagerCreator().create_manager(moderator);
+        auto new_obj = manager->load_model(fname);
         SceneManagerCreator().createManager()->getScene()->addObject(new_obj);
     }
 
     private:
-        std::shared_ptr<BaseLoader> loader;
+        std::string config_file;
         std::string fname;
     };
 

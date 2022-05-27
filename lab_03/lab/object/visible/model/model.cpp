@@ -15,9 +15,19 @@ void Model::addConnect(const Connect &connect)
     this->structure->addConnect(connect);
 }
 
-void Model::transform(const Point &move, const Point &scale, const Point &rotate)
+void Model::move(const Point &move)
 {
-    this->structure->transform(move, rotate, scale);
+    this->structure->move(move);
+}
+
+void Model::scale(const Point &scale)
+{
+    this->structure->scale(scale);
+}
+
+void Model::rotate(const Point &rotate)
+{
+    this->structure->rotate(rotate);
 }
 
 void Model::accept(std::shared_ptr<Visitor> visitor)

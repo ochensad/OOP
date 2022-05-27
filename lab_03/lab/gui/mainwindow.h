@@ -11,7 +11,6 @@
 #include "facade/facade.h"
 #include "loader/baseloader.h"
 #include "draw/factory/qtfactory.h"
-#include "loader/fileloader.h"
 #include "managers/draw/drawmanagercreator.h"
 #include "managers/scene/scenemanagercreator.h"
 #include "command/scenecommands.h"
@@ -36,8 +35,9 @@ protected:
     int camera_count = -1;
 
     void update_scene();
-
+    void setup_scene();
     void clear_scene();
+    void check_cam_exist();
 private slots:
     void on_loadButton_clicked();
 
@@ -49,19 +49,29 @@ private slots:
 
     void on_add_camButton_clicked();
 
+    void on_pushButton_clicked();
+
+    void on_clear_Button_clicked();
+
+    void on_set_model_button_clicked();
+
+    void on_delete_model_button_clicked();
+
     void on_pushButton_2_clicked();
 
-    void on_pushButton_clicked();
+    void on_move_up_cam_clicked();
+
+    void on_move_right_cam_clicked();
+
+    void on_move_left_cam_clicked();
+
+    void on_move_down_cam_clicked();
 
 private:
     Ui::MainWindow *ui;
     std::shared_ptr<QGraphicsScene> scene;
     std::shared_ptr<Facade> facade;
     std::shared_ptr<BaseDrawer> drawer;
-    std::shared_ptr<BaseLoader> loader;
-    std::shared_ptr<BaseLoader> loader_cam;
 
-    std::unique_ptr<AbsGraphFactory> createQtDrawerCreator();
-    void registration();
 };
 #endif // MAINWINDOW_H

@@ -33,3 +33,14 @@ void Scene::removeCamera(size_t index)
     std::advance(iter, index);
     cameras.erase(iter);
 }
+
+void Scene::setCamera(size_t index)
+{
+    this->cur_camera = index;
+}
+
+shared_ptr<Camera> Scene::getCamera() const
+{
+    return this->cameras.at(cur_camera);
+}
+

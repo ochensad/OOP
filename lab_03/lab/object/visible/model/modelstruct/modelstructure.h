@@ -20,7 +20,9 @@ public:
     const vector<Point> &getPoints() const;
     const vector<Connect> &getConnections() const;
 
-    void transform(const Point &move_value, const Point &rotate_value, const Point &scale_value);
+    void move(const Point &move_value);
+    void scale(const Point &scale_value);
+    void rotate(const Point &rotate_value);
 private:
     vector<Point> points;
     vector<Connect> connections;

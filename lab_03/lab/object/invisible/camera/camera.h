@@ -8,7 +8,7 @@ class Camera : public InvisibleObject
 public:
     Camera() = default;
     Camera(const Point &pos) : cur_pos(pos) {};
-    Camera(shared_ptr<Camera> &cam) : cur_pos(cam->getPos()) {};
+    Camera(shared_ptr<Camera> cam) : cur_pos(cam->getPos()) {};
     ~Camera() = default;
 
     virtual ObjectIterator begin() override {return ObjectIterator();};
@@ -16,7 +16,9 @@ public:
 
     virtual bool isComposite() const override {return false;};
     virtual bool isVisible() const override {return false;};
-    virtual void transform(const Point &move_val, const Point &rotate_val, const Point &scale_val) override;
+    virtual void move(const Point &move_val) override;
+    virtual void scale(const Point &scale_val) override;
+    virtual void rotate( const Point &rotate_val) override;
     virtual void accept(std::shared_ptr<Visitor> visitor) override;
 
     Point getPos() {return cur_pos;};
