@@ -1,8 +1,9 @@
 #include "cameraloadcontroller.h"
 
-CameraLoadController::CameraLoadController(std::shared_ptr<BaseCameraLoader> loader) : _builder(new CameraBuilder)
+CameraLoadController::CameraLoadController(std::shared_ptr<BaseCameraLoader> loader)
 {
     _loader = loader;
+    _builder = make_shared<CameraBuilder>();
 }
 
 std::shared_ptr<Camera> CameraLoadController::load(std::string &file_name) {

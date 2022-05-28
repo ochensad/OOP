@@ -5,18 +5,19 @@
 #include "object/invisible/camera/camera.h"
 #include "exeptions/exeptions.h"
 
-class CameraBuilder : public BaseBuilder
+class CameraBuilder
 {
 public:
-    CameraBuilder() : camera_ptr(nullptr) {};
+    CameraBuilder()
+    {
+        this->camera_ptr = make_shared<Camera>();
+    };
     ~CameraBuilder() = default;
 
-    bool isBuild() const override;
-    void build() override;
+    shared_ptr<Camera> build();
 
-    void buildCam(double &x, double &y, double &z);
+    CameraBuilder buildPos(double &x, double &y, double &z);
 
-    virtual shared_ptr<Camera> get();
 private:
     shared_ptr<Camera> camera_ptr;
 };

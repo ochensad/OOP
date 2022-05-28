@@ -6,14 +6,7 @@
 std::shared_ptr<ModelLoadController> ModelLoadControllerCreator::createController() {
     if (nullptr == _controller)
     {
-        try
-        {
-            makeInstance();
-        }
-        catch(const FileError &error)
-        {
-            cout << "HUI";
-        }
+        makeInstance();
     }
 
     return _controller;

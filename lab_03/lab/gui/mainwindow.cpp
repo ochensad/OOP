@@ -191,7 +191,6 @@ void MainWindow::on_add_camButton_clicked()
 
             std::string file_n = filedir + filename;
 
-            cout << file_n;
             std::string confdir = "C:\\Users\\79645\\config.txt";
             LoadCameraCommand load_command(confdir, file_n);
 

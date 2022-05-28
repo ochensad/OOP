@@ -36,11 +36,9 @@ void CameraLoader::close() {
 
 std::shared_ptr<Camera> CameraLoader::load(std::shared_ptr<CameraBuilder> builder)
 {
-    builder->build();
     double x, y, z;
     *file >> x >> y >> z;
-    builder->buildCam(x, y, z);
-    return builder->get();
+    return builder->buildPos(x, y, z).build();
 }
 
 

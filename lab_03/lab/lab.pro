@@ -9,6 +9,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    builder/builder.cpp \
     builder/camerabuilder.cpp \
     config/config.cpp \
     draw/drawers/qtdrawer.cpp \
@@ -40,6 +41,7 @@ SOURCES += \
     visitor/drawvisitor.cpp
 
 HEADERS += \
+    builder/builder.h \
     config/absconfig.h \
     loader/camera/basecameraloader.h \
     loader/baseloadcontroller.h \
