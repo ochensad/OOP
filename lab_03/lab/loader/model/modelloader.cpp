@@ -32,6 +32,7 @@ void ModelLoader::close()
     file->close();
 }
 
+
 std::shared_ptr<Object> ModelLoader::load(std::shared_ptr<ModelBuilder> builder)
 {
     builder->build();

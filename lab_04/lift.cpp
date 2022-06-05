@@ -2,9 +2,25 @@
 
 Lift::Lift()
 {
-    QObject::connect(&controller, SIGNAL(panel_new_target(int,direction)), &cabin, SLOT(cabin_get_target(int,direction)));
-    QObject::connect(&cabin, SIGNAL(cabin_crossed_floor(int,direction)), &controller, SLOT(busy(int,direction)));
-    QObject::connect(&cabin, SIGNAL(cabin_wait(int)), &controller, SLOT(free(int)));
+    QObject::connect(
+           &this->controller, &Controller::controller_departured,
+           &cabin, &Cabin::handle_moving
+       );
+       QObject::connect(
+           &this->cabin, &Cabin::cabin_moving,
+           &this->controller, &Controller::handle_start_moving
+       );
+       QObject::connect(
+           &this->controller, &Controller::controller_reached_target,
+           &cabin, &Cabin::handle_ready_to_board
+       );
+       QObject::connect(
+           &this->cabin, &Cabin::cabin_ready_to_board,
+           &this->controller, &Controller::handle_arrival
+       );
+       QObject::connect(
+           &this->cabin, &Cabin::cabin_ready_to_move, &this->controller, &Controller::handle_free
+       );
 }
 
 void Lift::call(int floor) { controller.new_target(floor); }

@@ -2,42 +2,62 @@
 #define CONTROLPANEL_H
 
 
+#include <memory>
+#include <vector>
 #include <QObject>
 #include <QDebug>
-#include <QVector>
+#include <iostream>
+#include "cabin.h"
 #include "constants.h"
 
-typedef enum
+class Controller : public QObject
 {
-    BUSY,
-    FREE
-} controller_state;
-
-class ControlPanel: public QObject
-{
-    Q_OBJECT
+Q_OBJECT
 public:
-    explicit ControlPanel(): state(FREE), cur_floor(0), cur_target(-1), cur_dir(STAY), is_target(FLOORS_COUNT, false)
+    enum Status
     {
-        QObject::connect(this, SIGNAL(panel_new_target(int,direction)), this, SLOT(busy(int,direction)));
-    }
+        FREE,
+        ADDING_CALL,
+        DEPARTURE,
+        START_MOVING,
+        MOVING,
+        ARRIVAL,
+    };
 
+    Controller();
     void new_target(int floor);
 
-public slots:
-    void busy(int floor, const direction &_direction);
-    void free(int floor);
-
 signals:
-    void panel_new_target(int floor, const direction &_direction);
+
+    void controller_freed();
+
+    void controller_needs_immediate_departure();
+
+    void controller_departured();
+
+    void controller_reached_target(const int floor);
+
+public slots:
+
+    void handle_adding_call(const int floor);
+
+    void handle_departure();
+
+    void handle_start_moving();
+
+    void handle_moving();
+
+    void handle_arrival();
+
+    void handle_free();
 
 private:
-    void nextTarget();
-    controller_state state;
-    int cur_floor;
-    int cur_target;
-    direction cur_dir;
-    QVector<bool> is_target;
+    Status status = FREE;
+    std::vector<int> targets;
+    int current_target = 1;
+    int current_floor = 1;
+    int direction = 0;
+    QTimer floor_timer;
 };
 
 #endif // CONTROLPANEL_H

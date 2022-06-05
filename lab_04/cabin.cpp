@@ -1,64 +1,75 @@
 #include "cabin.h"
 
-Cabin::Cabin() : cur_floor(0), cur_target(-1), cur_dir(STAY), state(WAIT)
+Cabin::Cabin()
 {
-    cross_floor_timer.setSingleShot(true);
-
-    QObject::connect(this, SIGNAL(cabin_achieved_target(int)), this, SLOT(stop(int)));
-    QObject::connect(&doors, SIGNAL(doors_closed()), this, SLOT(wait()));
-    QObject::connect(this, SIGNAL(cabin_stopped()), &doors, SLOT(start_opening()));
-    QObject::connect(&cross_floor_timer, SIGNAL(timeout()), this, SLOT(move()));
-    QObject::connect(this, SIGNAL(cabin_called()), this, SLOT(move()));
+    connect(&this->doors, &Doors::doors_opened, this, &Cabin::handle_boarding);
+    connect(&this->doors, &Doors::doors_closed, this, &Cabin::handle_ready_to_move);
+    connect(this, &Cabin::cabin_ready_to_board,&this->doors, &Doors::start_opening);
+    connect(this, &Cabin::cabin_ready_to_move,&this->doors, &Doors::start_closing);
 }
 
-void Cabin::move()
+void Cabin::handle_ready_to_move()
 {
-    if (state != START_MOVE && state != MOVING)
-        return;
-
-    if (state == MOVING)
-        cur_floor += cur_dir;
-    else
-        state = MOVING;
-
-    if (cur_floor == cur_target)
-        emit cabin_achieved_target(cur_floor);
-    else
+    if (this->status == BOARDING)
     {
-        emit cabin_crossed_floor(cur_floor, cur_dir);
-        cross_floor_timer.start(CROSSING_FLOOR);
+        this->status = READY_TO_MOVE;
+        qDebug() << "Кабина готова к отправке.";
+        emit cabin_ready_to_move();
     }
 }
 
-void Cabin::stop(int floor)
+void Cabin::handle_moving()
 {
-    if (state != MOVING)
-        return;
-
-    state = STOP;
-    qDebug() << "Cabin stopped at floor №" << cur_floor + 1;
-    emit cabin_stopped();
+    if (this->status == READY_TO_MOVE)
+    {
+        this->status = MOVING;
+        qDebug() << "Кабина поехала.";
+        emit cabin_moving();
+    }
 }
 
-void Cabin::wait()
+void Cabin::handle_ready_to_board()
 {
-    if (state != STOP)
-        return;
-
-    state = WAIT;
-    qDebug() << "Cabin waiting";
-
-    emit cabin_wait(cur_floor);
+    if (this->status == MOVING || this->status == READY_TO_MOVE)
+    {
+        this->status = READY_TO_BOARD;
+        qDebug() << "Кабина остановлена и готова к погрузке-выгрузке.";
+        emit cabin_ready_to_board();
+    }
 }
 
-void Cabin::cabin_get_target(int floor, const direction &dir)
+void Cabin::handle_boarding()
 {
-    if (state != WAIT)
-        return;
-
-    state = START_MOVE;
-    cur_target = floor;
-    cur_dir = dir;
-
-    emit cabin_called();
+    if (this->status == READY_TO_BOARD)
+    {
+        this->status = BOARDING;
+        qDebug() << "Погрузка-выгрузка.";
+        emit cabin_boarding();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

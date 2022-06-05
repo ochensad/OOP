@@ -76,7 +76,7 @@ void MainWindow::on_loadButton_clicked()
 
             std::string file_n = filedir + filename;
 
-            cout << file_n;
+            //cout << file_n;
 
             LoadModelCommand load_command(confdir, file_n);
 

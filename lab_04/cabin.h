@@ -4,43 +4,46 @@
 #include <QObject>
 #include <QTimer>
 #include <QDebug>
-#include "constants.h"
+#include <iostream>
 #include "doors.h"
 
-typedef enum {
-    MOVING,
-    WAIT,
-    START_MOVE,
-    STOP
-} cabin_state;
-
-class Cabin: public QObject
+class Cabin : public QObject
 {
-    Q_OBJECT
+Q_OBJECT
+public:
+    enum Status
+    {
+        READY_TO_BOARD,
+        BOARDING,
+        READY_TO_MOVE,
+        MOVING,
+    };
 
-  public:
-    explicit Cabin();
+    Cabin();
 
 signals:
-    void cabin_called();
-    void cabin_stopped();
-    void cabin_achieved_target(int);
-    void cabin_crossed_floor(int, const direction &_direction);
-    void cabin_wait(int floor);
+
+    void cabin_ready_to_board();
+
+    void cabin_ready_to_move();
+
+    void cabin_moving();
+
+    void cabin_boarding();
+
 
 public slots:
-    void move();
-    void stop(int floor);
-    void wait();
-    void cabin_get_target(int floor, const direction &dir);
+
+    void handle_ready_to_move();
+
+    void handle_moving();
+
+    void handle_ready_to_board();
+
+    void handle_boarding();
 
 private:
-    int cur_floor;
-    int cur_target;
-    direction cur_dir;
     Doors doors;
-    cabin_state state;
-    QTimer cross_floor_timer;
+    Status status = READY_TO_MOVE;
 };
-
 #endif // CABIN_H

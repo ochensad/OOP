@@ -28,7 +28,6 @@ protected:
     shared_ptr<Composite> objects;
     vector<shared_ptr<Camera>> cameras;
     size_t cur_camera;
-    vector<size_t> cur_models;
 };
 
 #endif // SCENE_H

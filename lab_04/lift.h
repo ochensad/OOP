@@ -14,7 +14,7 @@ public:
 
 private:
     Cabin cabin;
-    ControlPanel controller;
+    Controller controller;
 };
 
 #endif // LIFT_H

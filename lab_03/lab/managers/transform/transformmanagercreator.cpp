@@ -1,5 +1,7 @@
 #include "transformmanagercreator.h"
 
+using namespace std;
+
 std::shared_ptr<TransformManager> TransformManagerCreator::createManager() {
     if (nullptr == manager) {
         makeInstance();

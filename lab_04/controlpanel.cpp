@@ -1,70 +1,99 @@
 #include "controlpanel.h"
 
-void ControlPanel::new_target(int floor)
+Controller::Controller()
 {
-    qDebug() << "Get new target: floor №" << floor + 1;
-    is_target[floor] = true;
+    connect(this, &Controller::controller_needs_immediate_departure, this, &Controller::handle_departure);
+    connect(this, &Controller::controller_freed, this, &Controller::handle_departure);
 
-    cur_dir = (cur_floor > floor) ? DOWN : UP;
-
-    if (state == FREE)
-        nextTarget();
+    this->floor_timer.setInterval(CROSSING_FLOOR);
+    connect(&this->floor_timer, &QTimer::timeout, this, &Controller::handle_moving);
 }
 
-void ControlPanel::nextTarget()
+void Controller::handle_adding_call(const int floor)
 {
-    if (is_target[cur_floor])
+    Status prev_status = this->status;
+    this->status = ADDING_CALL;
+    this->targets.push_back(floor);
+    if (prev_status == FREE)
     {
-        is_target[cur_floor] = false;
-        emit panel_new_target(cur_floor, STAY);
+        qDebug() << "Лифт вызван на этаж №" << floor << ".";
+        emit controller_needs_immediate_departure();
     }
     else
     {
-        if (cur_dir == DOWN)
-            for (int i = FLOORS_COUNT - 1; i > -1; i--)
-            {
-                if (is_target[i])
-                {
-                    is_target[i] = false;
-                    if (i < cur_floor)
-                        emit panel_new_target(i, DOWN);
-                    else
-                        emit panel_new_target(i, UP);
-                    return;
-                }
-            }
-
-        for (int i = 0; i < FLOORS_COUNT; i++)
-            if (is_target[i])
-            {
-                is_target[i] = false;
-                if (i > cur_floor)
-                    emit panel_new_target(i, UP);
-                else
-                    emit panel_new_target(i, DOWN);
-                break;
-            }
+        qDebug() << "Вызов лифта на этаж №" << floor << "добавлен в очередь.";
     }
 }
 
-void ControlPanel::busy(int floor, const direction &_direction)
+void Controller::handle_departure()
 {
-    if (state == FREE)
+    if ((this->status == FREE || this->status == ADDING_CALL) && !this->targets.empty())
     {
-        state = BUSY;
-        cur_target = floor;
-        cur_dir = _direction;
-    }
-    else if (state == BUSY)
-    {
-        qDebug() << "Passed floor №" << floor + 1;
-        cur_floor += cur_dir;
+        this->status = DEPARTURE;
+        auto begin = this->targets.begin();
+        this->current_target = *begin;
+        this->targets.erase(begin);
+        qDebug() << "Отправление на этаж №" << this->current_target;
+        if (this->current_floor == this->current_target)
+        {
+            emit controller_reached_target(this->current_target);
+        }
+        else
+        {
+            emit controller_departured();
+        }
     }
 }
 
-void ControlPanel::free(int floor)
+void Controller::handle_start_moving()
 {
-    state = FREE;
-    cur_floor = floor;
-    nextTarget();
+    if (this->status == DEPARTURE || this->status == ADDING_CALL)
+    {
+        this->status = START_MOVING;
+        qDebug() << "Начато движение к этажу №" << this->current_target;
+        this->direction = this->current_floor > this->current_target ? -1 : 1;
+        this->floor_timer.start();
+    }
+}
+
+void Controller::handle_moving()
+{
+    if (this->status != FREE && this->status != ARRIVAL)
+    {
+        this->status = MOVING;
+        qDebug() << "Лифт на этаже №" << this->current_floor;
+        if (this->current_floor == this->current_target)
+        {
+            this->floor_timer.stop();
+            emit controller_reached_target(this->current_target);
+        }
+        else
+        {
+            this->current_floor += this->direction;
+        }
+    }
+}
+
+void Controller::handle_arrival()
+{
+    if (this->status == ADDING_CALL || this->status == MOVING || this->status == DEPARTURE)
+    {
+        this->status = ARRIVAL;
+        qDebug() << "Прибытие на этаж №" << this->current_floor;
+    }
+}
+
+void Controller::handle_free()
+{
+    if (this->status == ADDING_CALL || this->status == ARRIVAL)
+    {
+        this->status = FREE;
+        qDebug() << "Выполнение вызова на этаж №" << this->current_target << "окончено.";
+        emit controller_freed();
+    }
+}
+
+void Controller::new_target(int floor)
+{
+    emit handle_adding_call(floor);
 }
